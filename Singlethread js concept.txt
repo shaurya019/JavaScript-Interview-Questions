@@ -1,0 +1,27 @@
+JavaScript is single-threaded, which means it has only one call stack and can only do one thing at a time. This is an important concept because it affects how JavaScript handles tasks, especially asynchronous operations. Here’s a detailed explanation of how single-threaded JavaScript works:
+
+The Single Threaded Nature of JavaScript
+
+1. Call Stack
+The call stack is a data structure that keeps track of the function calls in the program. When a function is called, it's added to the top of the stack. When the function returns a value, it's removed from the stack.
+If the stack is busy (e.g., executing a function), no other function can be executed until the stack is empty again.
+
+
+2. Blocking and Non-Blocking Code
+Blocking code: Any code that causes the call stack to wait. For example, synchronous functions like alert(), loops that run indefinitely, etc.
+Non-blocking code: Code that doesn't block the execution of subsequent code, often achieved using asynchronous operations like setTimeout(), fetch(), Promises, and async/await.
+
+
+3. Event Loop
+The event loop is what allows JavaScript to perform non-blocking operations despite being single-threaded.
+It continuously checks the call stack and the task queue. If the call stack is empty, it pushes the first task from the task queue to the call stack.
+
+
+4. Task Queue (Callback Queue)
+When asynchronous operations complete, their callbacks are added to the task queue.
+The event loop takes these callbacks from the task queue and pushes them to the call stack when the call stack is empty.
+
+
+5. Microtask Queue
+Microtasks, such as those created by Promise callbacks (then, catch, finally), are placed in a separate queue called the microtask queue.
+The event loop checks the microtask queue before moving to the task queue. This means microtasks have a higher priority and are executed before tasks from the task queue.
