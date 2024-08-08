@@ -1,0 +1,16 @@
+** 10 Interview Questions Every JavaScript Developer Should Know **
+
+1. Can you name two programming paradigms important for JavaScript app developers?
+ans - JavaScript is a multi-paradigm language, supporting imperative/procedural programming along with OOP (Object-Oriented Programming) and functional programming. JavaScript supports OOP with prototypal inheritance.
+
+the two pillars of JavaScript 
+-Prototypal Inheritance (objects without classes, and prototype delegation, aka OLOO — Objects Linking to Other Objects)
+-Functional Programming 
+
+2. What is functional programming?
+Functional programming produces programs by composing mathematical functions and avoids shared state & mutable data.
+
+3. What is the difference between classical inheritance and prototypal inheritance?
+Class Inheritance: instances inherit from classes (like a blueprint — a description of the class), and create sub-class relationships: hierarchical class taxonomies. Instances are typically instantiated via constructor functions with the `new` keyword. Class inheritance may or may not use the `class` keyword from ES6.
+
+Prototypal Inheritance: instances inherit directly from other objects. Instances are typically instantiated via factory functions or `Object.create()`. Instances may be composed from many different objects, allowing for easy selective inheritance.
