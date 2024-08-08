@@ -1,3 +1,430 @@
 1.Explain event delegation.
 Answer: Event delegation is a technique where you attach a single event listener to a parent element rather than to individual child elements.
         Ex: Consider a list of items where you want to handle click events on each item. Instead of adding a click event listener to each item, you can add one event listener to the parent ul element.
+
+
+2.Explain how this works in JavaScript.
+Answer: In JavaScript, this refers to the context in which a function is executed. Its value depends on how a function is called:
+
+In a method, this refers to the object the method is called on.
+In a function, this refers to the global object (or undefined in strict mode).
+In an arrow function, this is lexically bound to the surrounding context, meaning it inherits this from its enclosing scope.
+
+
+3. Can you give an example of one of the ways that working with this has changed in ES6?
+Answer: One significant change in ES6 is the introduction of arrow functions, which do not have their own this context. Instead, arrow functions inherit this from their enclosing scope, which can simplify handling this in callbacks and asynchronous code
+
+class Counter {
+  constructor() {
+    this.count = 0;
+  }
+
+  increment() {
+    setTimeout(() => {
+      this.count++;
+      console.log(this.count); // `this` refers to the Counter instance
+    }, 1000);
+  }
+}
+
+const counter = new Counter();
+counter.increment(); // Logs: 1 after 1 second
+
+
+
+4. Explain how prototypal inheritance works.
+Answer: Prototypal inheritance allows objects to inherit properties and methods from other objects. Each object has an internal [[Prototype]] property that points to another object. When a property or method is accessed, JavaScript first checks the object itself and, if not found, checks its prototype, and so on up the prototype chain. This allows for sharing of methods and properties among objects.
+
+
+
+5. What is the difference between a variable that is: null, undefined, or undeclared?
+Answer:
+
+null: A variable explicitly set to null means it has no value. It is a deliberate assignment indicating emptiness.
+undefined: A variable is undefined if it has been declared but not yet assigned a value. It is the default state of variables.
+undeclared: A variable that has not been declared at all. Accessing an undeclared variable results in a ReferenceError.
+
+
+
+6. How would you go about checking for any of these states?
+Answer:
+
+To check if a variable is null, use variable === null.
+To check if a variable is undefined, use typeof variable === 'undefined' or variable === undefined.
+To check if a variable is undeclared, attempt to access it within a try block and catch the ReferenceError.
+
+
+
+7. What is a closure, and how/why would you use one?
+Answer: A closure is a function that retains access to its lexical scope, even when the function is executed outside that scope. Closures are useful for creating private variables, encapsulating state, and implementing factory functions.
+
+function createCounter() {
+  let count = 0;
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter = createCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+
+
+
+8. What language constructions do you use for iterating over object properties and array items?
+Answer:
+
+For objects: for...in loop or Object.keys(), Object.values(), Object.entries() with forEach.
+For arrays: for, for...of, forEach(), map(), filter(), reduce().
+
+
+
+9. Can you describe the main difference between the Array.forEach() loop and Array.map() methods and why you would pick one versus the other?
+Answer:
+
+Array.forEach(): Executes a provided function once for each array element. It does not return a new array and is used primarily for side effects.
+Array.map(): Creates a new array with the results of calling a provided function on every element. It is used when you need to transform array elements and get a new array.
+
+
+
+10. Can you describe other popular methods for iterating over arrays?
+Answer:
+
+Array.filter(): Creates a new array with elements that pass a test.
+Array.reduce(): Applies a function against an accumulator and each array element to reduce it to a single value.
+Array.some(): Tests whether at least one element passes a test.
+Array.every(): Tests whether all elements pass a test.
+
+11. what is  higher-order functions?
+Answer:
+Higher-order functions are functions that can take other functions as arguments or return functions as their result. This concept is fundamental in functional programming and is used to create more abstract and reusable code.
+
+// Higher-order function that takes a function as an argument
+function processArray(arr, callback) {
+    let result = [];
+    for (let i = 0; i < arr.length; i++) {
+        result.push(callback(arr[i]));
+    }
+    return result;
+}
+
+// Higher-order function that returns a function
+function makeMultiplier(factor) {
+    return function(x) {
+        return x * factor;
+    };
+}
+
+
+
+
+12. what is hoisted in js?
+Answer:
+In JavaScript, "hoisting" refers to the behavior where variable and function declarations are moved ("hoisted") to the top of their containing scope during the compilation phase, before the code is executed. This means that you can use variables and functions before they are declared in the code.
+
+
+
+13.What is the difference between host objects and native objects?
+Answer:
+
+Native objects: Built-in objects provided by JavaScript, such as Object, Array, Function, String, and Number.
+Host objects: Objects provided by the environment (browser or Node.js), such as window, document, or XMLHttpRequest.
+
+
+14. Explain the difference between: function Person(){}, var person = Person(), and var person = new Person()?
+
+The three ways of defining and instantiating Person involve different concepts in JavaScript: function declarations, function calls, and constructor functions. Let’s dive into each approach to clarify their differences.
+
+1. Function Declaration: function Person() {}
+This defines a function named Person. It’s not associated with any object or specific instance. It’s just a regular function.
+
+
+function Person() {
+    // Function body
+}
+Purpose: This function doesn’t do anything yet; it's just a template for what a Person might be.
+Usage: You can call it directly as a function, but it’s not yet intended to create instances.
+
+
+2. Function Call: var person = Person();
+Here, Person is invoked as a regular function.
+
+
+function Person() {
+    this.name = "John";
+}
+
+var person = Person();
+console.log(person); // undefined
+What Happens: When you call Person() without the new keyword, it runs like a regular function. Since Person doesn’t return anything explicitly, the value of person will be undefined.
+Context: Inside the Person function, this refers to the global object (window in browsers) if not using strict mode, leading to modifications on the global object.
+
+3. Constructor Function Call: var person = new Person();
+Here, Person is invoked as a constructor function using the new keyword.
+
+function Person() {
+    this.name = "John";
+}
+
+var person = new Person();
+console.log(person.name); // "John"
+What Happens: The new keyword does several things:
+Creates a new object.
+Sets the this context inside the Person function to the new object.
+Executes the function code.
+If the function does not return an object explicitly, the new object is returned by default.
+Context: this refers to the newly created object. Hence, person will be an instance of Person with the name property set to "John".
+
+
+15. Can you explain what Function.call and Function.apply do? What is the notable difference between the two?
+Answer:
+
+Function.call(): Calls a function with a specified this value and individual arguments.
+Function.apply(): Calls a function with a specified this value and arguments provided as an array.
+
+
+16. Explain Function.prototype.bind.
+Answer: Function.prototype.bind creates a new function that, when called, has its this keyword set to a provided value.
+function greet(greeting, name) {
+  console.log(`${greeting}, ${name}!`);
+}
+
+const sayHello = greet.bind(null, 'Hello');
+sayHello('Alice'); // Logs: "Hello, Alice!"
+
+
+17. What is type coercion?
+Answer: Type coercion is the automatic conversion of one data type to another. 
+console.log('5' + 1); // "51" (string concatenation)
+console.log('5' - 1); // 4 (numeric subtraction)
+
+
+18. Describe event bubbling.
+Answer: Event bubbling is a propagation model where an event starts from the target element and bubbles up to the root of the DOM tree. Each parent element can handle the event before it reaches the top.
+
+
+19. Describe event capturing.
+Answer: Event capturing is the opposite of bubbling. The event starts from the root and travels down to the target element. Event listeners can be set to handle events during this phase.
+
+
+20.What is the difference between an "attribute" and a "property"?
+Answer:
+Attribute: A value defined in HTML, such as id, class, or data-* attributes.
+Property: A value in the DOM object, which may differ from the attribute value. Properties are dynamic and reflect the current state of the element.
+
+
+21. What is the difference between == and ===?
+Answer:
+
+== (loose equality) performs type coercion before comparing values, which can lead to unexpected results.
+=== (strict equality) compares both value and type without performing type coercion.
+
+
+25. Explain the same-origin policy with regards to JavaScript.
+Answer: The same-origin policy is a security measure that restricts how documents or scripts loaded from one origin can interact with resources from another origin.
+
+
+26. Why is it called a Ternary operator, what does the word "Ternary" indicate?
+Answer: The term "ternary" indicates that the operator takes three operands. The ternary operator ? : is a shorthand for if-else statements and is used to conditionally assign values.
+
+
+27. What is strict mode? What are some of the advantages/disadvantages of using it?
+Answer: Strict mode is a way to opt into a stricter set of rules for JavaScript. It helps catch common errors and prevents the use of certain features that are considered bad practice.
+
+Advantages:
+
+Makes code more predictable and easier to debug.
+Prevents the use of unsafe features.
+Disadvantages:
+
+May require refactoring existing code.
+Some older code or libraries might not be compatible.
+
+
+29. What tools and techniques do you use debugging JavaScript code?
+Answer:
+
+Browser Developer Tools: Inspecting elements, debugging scripts, and monitoring network activity.
+Console Methods: console.log(), console.error(), console.table().
+Breakpoints: Setting breakpoints in developer tools to pause code execution.
+Debugging Extensions: Tools like VS Code's debugger or Chrome DevTools extension.
+
+
+30. Explain the difference between mutable and immutable objects.
+Answer:
+
+Mutable objects: Can be changed after they are created (e.g., arrays, objects).
+Immutable objects: Cannot be changed once created (e.g., strings, numbers).
+
+
+
+34. Explain the difference between synchronous and asynchronous functions.
+Answer:
+
+Synchronous functions: Execute in sequence, blocking the code until they complete.
+Asynchronous functions: Execute independently of the main program flow, allowing other operations to proceed while waiting for completion (e.g., using setTimeout(), Promises, async/await).
+
+
+35. What is the event loop?
+Answer: The event loop is a mechanism that handles asynchronous operations in JavaScript. It manages the execution of tasks in the event queue and processes them one by one while maintaining a single thread.
+
+
+
+36. What is the difference between the call stack and the task queue?
+Answer:
+
+Call Stack: Handles the execution of synchronous code, keeping track of function calls and their order.
+Task Queue: Manages asynchronous tasks (e.g., callbacks, Promises) that are waiting to be executed after the call stack is clear.
+
+
+37. What are the differences between variables created using let, var, or const?
+Answer:
+
+var: Function-scoped or globally scoped, allows re-declaration and updating.
+let: Block-scoped, allows updating but not re-declaration within the same scope.
+const: Block-scoped, cannot be reassigned after initialization, though objects assigned to const can still be mutated.
+
+
+38. Can you change a property of an object defined via const? How can you change this behavior?
+Answer: Yes, you can change properties of an object defined with const. const prevents reassignment of the variable but does not prevent modifications to the object's properties.
+
+To prevent property modifications, use Object.freeze():
+
+const obj = { name: 'Alice' };
+Object.freeze(obj);
+obj.name = 'Bob'; // This will not work
+
+
+
+40. Can you offer a use case for the new arrow => function syntax? How does this new syntax differ from other functions?
+Answer: Arrow functions are useful for preserving the lexical this context, making them ideal for use in callbacks and methods where this needs to refer to the enclosing context
+
+
+41. What advantage is there for using the arrow syntax for a method in a constructor?
+Answer: Using the arrow function syntax in a constructor for methods can be advantageous when you want to ensure that this refers to the instance of the class. However, arrow functions should not be used as methods directly on class instances, as they do not have their own this context.
+
+Using the arrow function syntax for methods in a constructor can be advantageous for maintaining the context of this. Here's a brief example to illustrate this:
+
+Example Without Arrow Function
+class Example {
+  constructor() {
+    this.value = 42;
+    // Regular method
+    this.method = function() {
+      console.log(this.value);
+    };
+  }
+}
+
+const example = new Example();
+const method = example.method;
+method(); // Logs: undefined (because `this` is not bound to the instance)
+In the above code, method loses its context when assigned to a new variable and called later, which means this is no longer bound to the instance of Example.
+
+Example With Arrow Function
+class Example {
+  constructor() {
+    this.value = 42;
+    // Arrow function
+    this.method = () => {
+      console.log(this.value);
+    };
+  }
+}
+
+const example = new Example();
+const method = example.method;
+method(); // Logs: 42 (because `this` is lexically bound to the instance)
+Here, the arrow function syntax binds this lexically, meaning it retains the context of this from where it was defined (i.e., the instance of Example). Thus, when method is called, it correctly logs 42, preserving the intended behavior.
+
+Summary
+Arrow functions lexically bind this, which can be particularly useful when you need to maintain the context of this across different scopes.
+Regular methods have their this context determined by how the method is called, which can lead to issues if the method is used outside its intended context.
+
+
+43. Can you give an example of destructuring an object or an array?
+Answer:
+Object Destructuring:
+
+const person = { name: 'Alice', age: 25 };
+const { name, age } = person;
+console.log(name); // Alice
+console.log(age); // 25
+
+Array Destructuring:
+
+const [first, second] = [1, 2];
+console.log(first); // 1
+console.log(second); // 2
+
+
+45. Can you give an example of a curry function and why this syntax offers an advantage?
+Answer: Currying transforms a function with multiple arguments into a sequence of functions each taking a single argument. It allows for partial application of functions.
+
+Example:
+function multiply(a) {
+  return function(b) {
+    return a * b;
+  };
+}
+
+const double = multiply(2);
+console.log(double(5)); // 10
+
+
+Advantage: Currying helps in creating more reusable and composable functions, enabling partial application and improved readability.
+
+
+46. What are the benefits of using spread syntax and how is it different from rest syntax?
+Answer:
+
+Spread Syntax (...): Expands elements of an iterable (e.g., array) into individual elements. Useful for copying arrays, merging arrays, or spreading arguments.
+
+
+47. How can you share code between files?
+Answer:
+
+Using Modules: Use import and export statements to share code between files in ES6 modules.
+CommonJS Modules: Use require() and module.exports for Node.js modules.
+
+
+
+50. What is a promise? Where and how would you use a promise?
+Answer: A Promise is an object representing the eventual completion (or failure) of an asynchronous operation. It provides methods to handle the result of the operation once it's complete.
+
+Example of using a promise:
+
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve('Data received'), 1000);
+  });
+}
+
+fetchData().then(data => console.log(data)); // Logs: Data received
+Promises are useful for managing asynchronous operations and chaining multiple tasks together.
+
+
+51. Discuss how you might use Object Oriented Programming principles when coding with JavaScript.
+Answer: Object-Oriented Programming (OOP) principles in JavaScript include:
+
+Encapsulation: Bundling data and methods into objects. Use classes and constructors to create and manage object state.
+Inheritance: Using prototypes or classes to extend functionality and create a hierarchy of objects.
+Polymorphism: Allowing objects to be treated as instances of their parent class. Overriding methods to provide specific behavior in derived classes.
+Abstraction: Hiding implementation details and exposing only necessary parts of objects through public methods.
+
+
+
+52. What is the difference between event.target and event.currentTarget?
+Answer:
+
+event.target: Refers to the element that triggered the event. This is the element on which the event occurred.
+event.currentTarget: Refers to the element to which the event handler is attached. It is the element currently handling the event during the event phase.
+
+
+
+53. What is the difference between event.preventDefault() and event.stopPropagation()?
+Answer:
+
+event.preventDefault(): Prevents the default action associated with the event from occurring (e.g., following a link).
+event.stopPropagation(): Stops the event from bubbling up or capturing down the DOM hierarchy, preventing other event handlers from receiving the event.
